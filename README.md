@@ -23,9 +23,27 @@ cd dailyclean-presentation/demo/openshift
 kubectl apply -f dailyclean-serviceaccount.yml
 # Link your docker account to this service account in order to pull images
 oc secret link dailyclean docker --for=pull
-kubectl label deployment workspace4be7921176a1419d axa.com/dailyclean=false
+kubectl label deployment workspacefb97ad281d25468f axa.com/dailyclean=false
 # Install dailyclean for the default service account
 kubectl apply -f deployment-dailyclean.yml
 # Install three instances of kubernetes-bootcamp
 kubectl apply -f deployment-others.yml
+```
+
+To reset your namespace : 
+
+```
+kubectl delete deployments/dailyclean-api
+kubectl delete deployments/kubernetes-bootcamp1
+kubectl delete deployments/kubernetes-bootcamp2
+kubectl delete deployments/kubernetes-bootcamp3
+
+kubectl delete services/dailyclean-api
+kubectl delete services/kubernetes-bootcamp1
+kubectl delete services/kubernetes-bootcamp2
+kubectl delete services/kubernetes-bootcamp3
+
+kubectl delete routes/dailyclean
+
+rm -rf dailyclean-presentation
 ```
