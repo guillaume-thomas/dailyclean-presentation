@@ -40,11 +40,10 @@ metadata:
 spec:
   selector:
     app: dailyclean-api
-  type: NodePort
   ports:
     - port: 8080
+      name: http-port
       targetPort: 8080
-      nodePort: 30001
 ---
 apiVersion: "route.openshift.io/v1"
 kind: Route
