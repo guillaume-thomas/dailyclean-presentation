@@ -16,41 +16,44 @@ Customize the scripts in demo/openshift in order to set your own parameters (san
 
 To test dailyclean on your openshift dev sandbox, please use these commands:
 
-```
+```bash
 git clone https://github.com/guillaume-thomas/dailyclean-presentation.git
 cd dailyclean-presentation/demo/openshift
 # Create dailyclean serviceaccount
 oc apply -f dailyclean-serviceaccount.yml
 # Link your docker account to this service account in order to pull images
 oc secret link dailyclean docker --for=pull
-oc label deployment workspace6ac4f84f22e3422f axa.com/dailyclean=false
+oc label deployment workspace6f726f706e7842fc axa.com/dailyclean=false
 # Install dailyclean for the default service account
 oc apply -f deployment-dailyclean.yml
 # Install three instances of kubernetes-bootcamp
 oc apply -f deployment-others.yml
 # Install quake3
 oc apply -f deployment-q3.yml
+# Install MySql
+oc apply -f deployment-mysql.yml
+```
+
+This is some sql commands to demonstration mysql:
+```mysql
+create database crm;
+use crm;
+create table client (firstname varchar(20), lastname varchar(20));
+insert into client values ("guillaume", "thomas");
 ```
 
 To reset your namespace : 
 
-```
-oc delete deployments/dailyclean-api
-oc delete deployments/kubernetes-bootcamp1
-oc delete deployments/kubernetes-bootcamp2
-oc delete deployments/kubernetes-bootcamp3
-oc delete deployments/quake
+```bash
+cd ~
+cd dailyclean-presentation/demo/openshift
 
-oc delete services/dailyclean-api
-oc delete services/kubernetes-bootcamp1
-oc delete services/kubernetes-bootcamp2
-oc delete services/kubernetes-bootcamp3
-oc delete services/quake
+oc delete -f dailyclean-serviceaccount.yml
+oc delete -f deployment-dailyclean.yml
+oc delete -f deployment-mysql.yml
+oc delete -f deployment-others.yml
+oc delete -f deployment-q3.yml
 
-oc delete routes/dailyclean
-oc delete routes/quake
-
-oc delete configmaps/quake3-server-config
-
+cd ../../..
 rm -rf dailyclean-presentation
 ```

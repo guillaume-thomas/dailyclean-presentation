@@ -1,0 +1,153 @@
+Well, ok!
+
+Thank you again for having me today to talk about Dailyclean. As you may know, there is a little problem of carbon emissions in IT. Holly explains
+it very well in her talks.
+Well, I have some good news for you! In fact, Planet Earth is saved!!! Well, sorry, i'm joking...
+There is still a lot of work to do... But with Dailyclean, maybe you will find here a simple solution to reduce the carbon emissions of your IT!
+
+Let me explain how!
+
+So, quickly, what is Dailyclean? Dailyclean is an open-source project initially developped by Axa France. Its purpose is to allow you to save resources by
+turning on and off your workloads in Kubernetes. And it can perform this task on demand or automatically, with a simple planning.
+
+Of course, it is working with OpenShift. And by using Dailyclean, you will be able to reach your greenIT and your finops objectives. By turning off your
+applications when you do not need them, during the night and the week-end for example.
+
+At Axa France, every Kubernetes projects have to use Dailyclean.
+
+So now, let me show you how it works with a demonstration. You can perform this same demonstration at home. First, you have to install the
+local kubernetes cluster with Docker Desktop. In the github page of Dailyclean you will find these commands. You just have to run them in your favorite
+terminal and enjoy Dailyclean.
+
+For this demonstration, I prefer to use an Openshift, because it is more visual. This is a free OpenShift Sandbox. I have here my own commands, they are
+pretty much the same but I have some surprises for you, folks. I play them in this web terminal and set up my demonstration environment.
+As you can see, I am in this namespace, which is a development one. Here I have dailyclean of course, which is an API, some kubernetes
+bootcamps that I duplicate three times here.
+I promise, they do not mine bitcoin. Here a mysql Database, I can connect to it to show you it is a real one. Finally, a fully playable boomer shooter online!
+I would like here to kindly thank Sebastien Blanc for giving me these Quake configurations.
+
+As you can see, this game is working, we could play it together, maybe later. So let me quit this game before being killed by a rocket.
+
+So now, let me show you dailyclean. I will split my screen. So, as you can see, dailyclean is running directly in my namespace.
+So the first piece of information you will find in this page is the name of the namespace where you actually are working. So here my development environment.
+Here you can find the state of this environment. It is currently Running because I have just set it up. In this first panel, I can turn on and off my environment.
+I am now turning it off. As you can see, my workloads are terminating or already terminated. As you can see, my mySql Database is terminated too.
+So Dailyclean does not work only with web apps, it can work with stateful sets, like databases, too!
+
+As you can see here, this light is red and the current state of my environment is Stopped. If I turn on my environment, the workloads are starting,
+the current state of my environment is In progress.
+
+Just let the environment start and I suggest to focus on this table. Here you will find all the workloads which compose your environment,
+ which are deployed in your namespace. As you can see, they can be Deployments or StatefulSets. So here we have dailyclean, my bootcamps three times,
+ my videogame, this is the workload used by the web terminal so I will not comment it more and here, I have my database. These names have different color.
+ It is blue when the workload is running, orange when it is starting or stopping and red when it is stopped. If the name of the workload is black, like here,
+ it is because this workload will not be turned on or off by Dailyclean. In fact, we do not want Dailyclean to commit hara-kiri.
+ So we have a simple configuration to tell Dailyclean to not stop this workload. We have used it here with the web terminal too. I will explain how it works later.
+
+In these columns, you will find some estimations of the cost of your environment. I insist they are just estimations. I will explain how it works later, too.
+So, you will find these estimations per workloads, and at the bottom of this table, the sum of all the costs. In red here, you can find what you should pay if
+you are not using Dailyclean. And here, in green, the amount of money you can save by using dailyclean. Here it is null, because we have not planned how dailyclean
+will start and stop, yet.
+Remember, Dailyclean will automattically turn on or off your environment. If we don't configure an hour to stop it, Dailyclean will estimate that your are not using
+itself.
+
+You can plan here. So I can set a start hour, 7AM, and an hour to stop the environment, 4 PM for example. As you can see, I am currently saving money, because
+I am sure that my workloads will be closed during the night. With this option, I can start my application only from Monday to Friday, because
+I do not use my development environment during the week-end, because I hate to work during the week-end. But I can choose to start it every day of the week.
+If I reduce here the window of time when my application is running, for example by setting the start here at 10 am, I will obviously save more money, as you can see
+here.
+I have another option here: I can deactivate the automatic start of my environment. So here, Dailyclean will estimate I will never use this environment. Sometimes,
+ when I need it, I turn it on manually and if I forgot to stop it after using it, dailyclean will stop it automattically for me. I recommand this configuration,
+ mostly for your stagging environments.
+
+And well, that's it for this quick overview!
+
+Now, I would like to tell you why we developed this solution at Axa France. As you know now, I am currently a Machine Learning engineer. And my job is to follow and
+help our Datascientists to make their Machine learning solution work properly in production. To be more specific, in my team we are working mainly on real time
+applications. On this example here, we would like to perform some optical characters recognition to get information from a french identity card. As you can see,
+before this final step of recognition, we have some others steps to execute. First, if the document is a PDF file, we split each page to a single image.
+For each of these images, we detect if there is a recto or a verso of our national identity card and the we zoom in on it. If this card is not straight we have to
+rotate it. Then, we create zones for each point of interest and finally, we perform a characters recognition and return the information in a structured way,
+in a json file for example.
+
+As you can see in this example, workflows could be complex. Because we want a real time solution, this application is a webservice. And to design this kind of
+workflow, we choose to make each of these steps a microservice. These microservices can handle some artificial intelligence, but sometimes they don't. For
+example, I don't need ML to split my pdf file. These microservices can have different requirements, as different versions of Python. They even may need to
+install some libraries on the operating system. For all of these reasons, we choose to use containers to meet our needs.
+
+So we are using Docker and to orchestrate these containers, we obviously use Kubernetes, and more specificaly, an OpenShift cluster. So we manage our proper
+Openshift cluster at Axa. And projects pay this cloud platform by the amount of memory they use. And when we worked on our first solutions, monitored the hardware
+requirements and made some projections of the cost of all the environments until production, of all our applications, we saw it was really expensive.
+
+So we looked for solutions and, besides optimisation, using Dailyclean allows us to divide our cost by 10! This is a huge amount of money! And we are very proud of it.
+
+Now, I would like to take a step back and make some global observations we made at AXA, not only focusing on machine learning.
+This demonstration was made by Julien Hatzig, Finops expert at AXA. It is some simple maths, you can re-do them at home.
+Until now, usually we let our applications up for 24 hours a day, 7 days a week, 12 months a year. But our applications at AXA are mainly used by agents in
+insurance. And these agents are like you and me, they do not like to work during the night. So let's say that we can let our applications run 12 hours a day.
+
+Agents are like you, like me, they do not like to work during the week-end. So again, we can reasonnably assume that we can turn our applications off during the
+week-end, so 60 hours per week. On average, we have 20 working days per month, so our applications need to be up only 240 hours per month.
+
+In that case, when we let our applications up always, they are not used 12 hours a day, 4 and a half days a week, 7 months a year. Yeah, 7 months...
+In other words: 67 percent of the time, your applications are burning coil or gasoline for nothing. So that's why we need to find solutions to do some, as you can
+say Holly, some LightSwitchOps. Just to explain this picture, this is a french joke. This character comes from a french advertisment for an energy supplier.
+He is a father, always yelling the following sentence after his son, because he doesn't turn off the light after leaving a room: "C'est pas Versailles ici!"
+("It's not Versailles, here!"), a reference to this luxurious and magnificent french castle, were the lights are supposedly always on. So, yeah, that's why we
+need dailyclean, to turn off our unused applications when we do not need them.
+
+Ok! Now that I have finished talking about my life, let me show you the magic behind the scene. Usually, to create some Pods, we use Deployments and StatefulSets.
+ By doing this, it will prevent the deletion of Pods directly. So here, if I want to delete this pod, it will automatically restart. From my Deployments,
+  I can control the number of my replicas. I can increase it to have more instances of my webservice. So here I can set it to two so now, I have two pods of this
+   bootcamp.
+
+But I can decrease this number here to 0. I am doing here a "scale to 0". And that's all that Dailyclean is doing here. When I stop my environment here,
+the Dailyclean API will create a job and the container in this job will launch a script written in Python. This script will loop on all the Deployments and
+StatefulSets and set the number of replicas of each one from X to 0. That's all! And when I want to start my environment here, the Dailyclean API will create
+another job to set the number of replicas from 0 to 1.
+
+So, that's it for the on demand feature. Now, to plan the stop and start of our namespace, we will simply use another feature from Kubernetes which is the cronJob.
+It allows us to add a cron to our jobs in order to automatically launch them when the cron is reached. That's all, it is quite simple actually!
+
+So, to sum up, Dailyclean is basically a cron job which creates a job that runs a script in Python to update the number of replicas of our
+Deployments and StatefulSEts. In this picture, I sum up the architecture of the solution. A question you may ask is: How does this work if I have several replicas
+for a Deployment; will Dailyclean restore them when it starts the environment? The answer is: No... Sorry...
+
+Dailyclean is completely stateless, it does not record the state of your environment before stopping it... So you have to use it with a Continuous Deployment tool,
+ like fluxCD for example.
+
+I would like now to focus on the fact that dailyclean is installed directly inside the namespace it manages. We choose to design the solution this way for security
+purposes. That means Dailyclean is replicated on each namespace of your cluster. It could a problem if Dailyclean had a large footprint. So we need a technology
+that ensures us the smallest footprint as possible. Now, at last, let's talk about Quarkus !!!
+
+So, to sum up our needs, we need a technology (lister les bullet points)...
+
+Because I know a little about Java, we choose GraalVM and its very cool ahead of time compilation feature! Thanks to it, we can divide drastically the memory
+footprint of our application. We performed simple benchmarks to test it and it was litterally a blast!
+
+Of course, there were some concessions to make, but in the case of Dailyclean and the objectives we aimed for (low memory footprint), these concessions weren't
+ prohibitive.
+
+And because I didn't want to code the entire solution in plain Java, we needed to find a proper framework to develop the Webservice of Dailyclean.
+Here comes Quarkus. We developed the first iteration of Dailyclean at the beginning of 2020. By this time, there were still no Spring native and Quarkus was a good
+choice to easily create a Webservice packaged as a native image. Out of the box, all the features and libraries work with the graalvm ahead of time compiler.
+
+First try of compilation, boom, I had my executable working with no runtime errors.
+
+It is open-source, supported mainly by Redhat, so it was a relief to us. It is simple to learn, simple to use, largely documented. So, for someone like me,
+who codes a LOT with Spring boot, I was not in an unknown territory. (continuer de lire les bullets points).
+
+Yeah, Quarkus is Cool!!!
+
+I would like to take a little time to talk about Serverless because, sometimes, I hear that Dailyclean is useless because of Serverless. Of course, Serverless is a
+solution but, to me, it can't be THE ONLY solution. Sometimes, my applications can't start fast enough to allow the usage of Serverless. It is an example.
+I can't shut down my databases for example. I think we can use both solutions, maybe with others, and it is what we do at AXA France and it mays be replicated for
+other entities.
+
+About this topic, we have developed SlimFaaS at AXA France. It is a simple Serverless solution. It is not coded with Quarkus, it is a .Net application but it works
+ very well with our projects and we have saved a lot of workloads and a lot of money. It is not the purpose of this presentation so, I will not talk any longer
+  about it.
+
+To conclude, (lire les bullets points)
+
+And it's completly free to use!!! Try it, use it, download it, contribute to it and thank you for your listening :)
