@@ -15,18 +15,19 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 3Gi
+      storage: 1Gi
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mysql
+  labels:
+    axa.com/dailyclean: "true"
 spec:
+  serviceName: mysql
   selector:
     matchLabels:
       app: mysql
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -47,6 +48,13 @@ spec:
           volumeMounts:
             - name: mysql-persistent-storage
               mountPath: /var/lib/mysql
+          resources:
+            limits:
+              cpu: 600m
+              memory: 1024Mi
+            requests:
+              cpu: 300m
+              memory: 512Mi
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
